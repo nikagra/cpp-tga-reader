@@ -1,9 +1,9 @@
 #include "tga_reader.h"
 
-u32 bitsToBytes(const u32& depth);
+unsigned bitsToBytes(const unsigned& depth);
 ReadResult readTgaHeader(std::ifstream& source, TgaHeader& header);
 
-ReadResult readTgaFile(const std::string& filename, std::vector<u8> imageData, u32& width, u32& height)
+ReadResult readTgaFile(const std::string& filename, std::vector<unsigned char> imageData, unsigned& width, unsigned& height)
 {
     std::ifstream file;
     file.open(filename, std::fstream::in | std::fstream::binary);
@@ -28,7 +28,7 @@ ReadResult readTgaFile(const std::string& filename, std::vector<u8> imageData, u
     // 4. read image data of size width * height * bitsToBytes(bitsPerPixel)
     if (tgaHeader.dataType != TgaHeader::NO_IMG_DATA)
     {
-        u32 imageDataSize = tgaHeader.width * tgaHeader.height * bitsToBytes(tgaHeader.bitsPerPixel);
+        unsigned imageDataSize = tgaHeader.width * tgaHeader.height * bitsToBytes(tgaHeader.bitsPerPixel);
         char *imageDataBuffer = new char[imageDataSize];
         file.read(imageDataBuffer, imageDataSize);
         imageData.assign(imageDataBuffer, imageDataBuffer + imageDataSize);
@@ -46,13 +46,13 @@ ReadResult readTgaHeader(std::ifstream& source, TgaHeader& header)
     header.idLength = headerBuffer[0];
     header.colorMapType = headerBuffer[1];
     header.dataType = headerBuffer[2];
-    header.colorMapOrigin = *reinterpret_cast<u16*>(&headerBuffer[3]);
-    header.colorMapLength = *reinterpret_cast<u16*>(&headerBuffer[5]);
+    header.colorMapOrigin = *reinterpret_cast<std::uint16_t*>(&headerBuffer[3]);
+    header.colorMapLength = *reinterpret_cast<std::uint16_t*>(&headerBuffer[5]);
     header.colorMapDepth = headerBuffer[7];
-    header.xOrigin = *reinterpret_cast<u16*>(&headerBuffer[8]);
-    header.yOrigin = *reinterpret_cast<u16*>(&headerBuffer[10]);
-    header.width = *reinterpret_cast<u16*>(&headerBuffer[12]);
-    header.height = *reinterpret_cast<u16*>(&headerBuffer[14]);
+    header.xOrigin = *reinterpret_cast<std::uint16_t*>(&headerBuffer[8]);
+    header.yOrigin = *reinterpret_cast<std::uint16_t*>(&headerBuffer[10]);
+    header.width = *reinterpret_cast<std::uint16_t*>(&headerBuffer[12]);
+    header.height = *reinterpret_cast<std::uint16_t*>(&headerBuffer[14]);
     header.bitsPerPixel = headerBuffer[16];
     header.imageDescriptor = headerBuffer[17];
 
@@ -61,7 +61,7 @@ ReadResult readTgaHeader(std::ifstream& source, TgaHeader& header)
     return ReadResult::good;
 }
 
-u32 bitsToBytes(const u32& depth)
+unsigned bitsToBytes(const unsigned& depth)
 {
     return depth >> 3;
 }

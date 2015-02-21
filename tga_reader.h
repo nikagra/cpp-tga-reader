@@ -1,11 +1,10 @@
 #ifndef __TGA_READER_H_
 #define __TGA_READER_H_
 
-#include "types.h"
-
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <cstdint>
 
 enum class ReadResult
 {
@@ -15,7 +14,7 @@ enum class ReadResult
 
 struct TgaHeader
 {
-    static const u32 LENGTH = 18;
+    static const unsigned LENGTH = 18;
 
     enum DataType
     {
@@ -30,20 +29,20 @@ struct TgaHeader
         COMPRESSED_CM_RUNLENGTH_ENC_4_PASS = 33, // Compressed color-mapped data, using Huffman, Delta, and runlength encoding. 4-pass quadtree-type process.
     };
 
-    u8 idLength;
-    u8 colorMapType;
-    u8 dataType;
-    u16 colorMapOrigin;
-    u16 colorMapLength;
-    u8 colorMapDepth;
-    u16 xOrigin;
-    u16 yOrigin;
-    u16 width;
-    u16 height;
-    u8 bitsPerPixel;
-    u8 imageDescriptor;
+    std::uint8_t idLength;
+    std::uint8_t colorMapType;
+    std::uint8_t dataType;
+    std::uint16_t colorMapOrigin;
+    std::uint16_t colorMapLength;
+    std::uint8_t colorMapDepth;
+    std::uint16_t xOrigin;
+    std::uint16_t yOrigin;
+    std::uint16_t width;
+    std::uint16_t height;
+    std::uint8_t bitsPerPixel;
+    std::uint8_t imageDescriptor;
 };
 
-ReadResult readTgaFile(const std::string& filename, std::vector<u8> imageData, u32& width, u32& height);
+ReadResult readTgaFile(const std::string& filename, std::vector<unsigned char> imageData, unsigned& width, unsigned& height);
 
 #endif __TGA_READER_H_
